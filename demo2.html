@@ -246,7 +246,9 @@
 				}
 			})
 			.mouseleave(function() {
-				target = null;
+				if(robot_start_dragged) {
+					target = null;
+				}
 			});
 			
 			$('#motion_library img').draggable({
