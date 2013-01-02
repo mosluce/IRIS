@@ -194,7 +194,11 @@
 					.css('cursor', 'pointer')
 					.css('position', 'absolute')
 					.attr('title', tooltips)
-					.tooltip()
+					.tooltip({
+						content: function() {
+							return tooltips;
+						}
+					})
 					.draggable({
 						axis: 'x', containment: 'parent', cursor: 'move', 
 						stop: function() {
@@ -230,6 +234,57 @@
 		function initCorner() {
 			$('table, .navi, table tr td').corner('3px');
 		}
+		
+		var robot_start_dragged = false;
+		function initRobotMotionDrag() {
+			$('.motion_line').mousemove(function(e) {
+				if(robot_start_dragged) {
+					target = $(this);
+					
+					ox = e.offsetX;
+					oy = e.offsetY;
+				}
+			})
+			.mouseleave(function() {
+				target = null;
+			});
+			
+			$('#motion_library img').draggable({
+				helper: 'clone',
+				start: function() {
+					robot_start_dragged = true;
+				},
+				stop: function() {
+					console.log('stop');
+					var source = $(this);
+					var img = $(document.createElement('img')).attr('src', source.attr('src')).css('width', 100);
+					
+					if(target != null) {
+						var title = $(this).attr('title').split('|');
+						var text = title[0];
+						var duration = title[1];
+						
+						var item = generateTimelineItem(img);
+						item.css('height', 70)
+							.css('margin-top', -40)
+							.css('width', duration * 21)
+							.css('overflow', 'hidden')
+							.css('padding', 5)
+							.css('color', '#fff')
+							.css('background-image', 'url('+source.attr('src')+')')
+							.css('background-size', '100% auto')
+							.text(text)
+							.mousemove(function(e) {
+								var start_duration = Math.floor($(this).position().left/21);
+								var end_duration = start_duration + parseInt(duration);
+								
+								showPointer(e.pageX, e.pageY, start_duration, end_duration);
+							});
+					}
+					robot_start_dragged = false;
+				}
+			});
+		}
 	
 		$(function() {
 			initTimelineUnit();
@@ -238,6 +293,7 @@
 			initMusicLine();
 			initSoundLine();
 			initSpeechLine();
+			initRobotMotionDrag();
 			initCorner();
 		});
 	</script>
@@ -290,7 +346,7 @@
 			height: 18px;
 			border: 1px solid #ccc;
 			float: left;
-			left: -1px;
+			margin-right: -1px;
 			background-color: #EAEAEA;
 		}
 		
@@ -383,34 +439,34 @@
 				</li>
 			</ul>
 			<div id="speed_slow">
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
 			</div>
 			<div id="speed_min">
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
 			</div>
 			<div id="speed_fast">
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
-				<img src="script_img/001.jpg" />
-				<img src="script_img/002.jpg" />
-				<img src="script_img/003.jpg" />
-				<img src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
+				<img title="Head Up|5" src="script_img/001.jpg" />
+				<img title="Two Hands Half Up|10" src="script_img/002.jpg" />
+				<img title="Two Hands Horizontal Up|10" src="script_img/003.jpg" />
+				<img title="Two Hands Up|10" src="script_img/004.jpg" />
 			</div>
 		</div>
 		
