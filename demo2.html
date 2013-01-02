@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="jqueryui/js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript" src="jquery.corner.js"></script>
 	
-	<link rel="stylesheet" type="text/css" href="jqueryui/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" />
+	<link rel="stylesheet" type="text/css" href="jqueryui/css/redmond/jquery-ui-1.9.2.custom.min.css" />
 	
 	<script type="text/javascript">
 		var ox, oy, target;
@@ -32,7 +32,9 @@
 		}
 		
 		function initMotionLibrary() {
-			$('#motion_library').tabs();
+			$('#motion_library').tabs({
+				collapsible: true
+			});
 		}
 		
 		function initMusicLine() {
@@ -167,7 +169,11 @@
 					item.css('width', 'auto')
 						.css('height', 20)
 						.css('margin-top', -11)
-						.text(val);
+						.text(val)
+						.mousemove(function(e) {
+							var start_duration = Math.floor($(this).position().left/21);
+							showPointer(e.pageX, e.pageY, start_duration);
+						});
 						
 					hideAll();
 				}
@@ -180,8 +186,13 @@
 				// console.log(e.pageX + ' ' + e.pageY);
 				$('#pointer').show()
 					.css('left', x + 20)
-					.css('top', y)
-					.text(start_duration + 's ~ ' + end_duration + 's');
+					.css('top', y);
+					
+				if(end_duration) {
+					$('#pointer').text(start_duration + 's ~ ' + end_duration + 's');
+				} else {
+					$('#pointer').text(start_duration + 's');
+				}
 				return false;
 			}
 		}
@@ -263,7 +274,7 @@
 					robot_start_dragged = true;
 				},
 				stop: function() {
-					console.log('stop');
+					// console.log('stop');
 					var source = $(this);
 					var img = $(document.createElement('img')).attr('src', source.attr('src')).css('width', 100);
 					
@@ -316,7 +327,7 @@
 		#mainframe {
 			/*border: 1px solid #222;*/
 			width: 1000px;
-			min-height: 600px;
+			/*min-height: 600px;*/
 			margin: 0px auto;
 			/*overflow-x: scroll;*/
 			border: 1px solid #666;
@@ -324,7 +335,7 @@
 			/*margin-bottom: -1px;*/
 			padding: 5px;
 			padding-top: 10px;
-			padding-bottom: 30px;
+			padding-bottom: 5px;
 		}
 		
 		#timeline_unit {
@@ -335,10 +346,11 @@
 			vertical-align: bottom;
 			margin-top: 10px;
 			margin-left: 162px;
+			/*position: fixed;*/
 		}
 		
 		#scrollview {
-			overflow: scroll; padding-bottom: 30px; height: 500px;
+			overflow: scroll; padding-bottom: 5px; height: 600px;
 		}
 		
 		.timeline_contains {
@@ -365,9 +377,10 @@
 		.navi {
 			line-height: 30px;
 			color: #222222;
-			background-color: #F2AA25;
+			/*background-color: #F2AA25;*/
+			background: #5C9CCC url(jqueryui/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);
 			padding-left: 10px;
-			border: 1px solid #DE7F00;
+			border: 1px solid #3681D3;
 			margin-bottom: 2px;
 			margin-top: 10px;
 		}
@@ -376,9 +389,12 @@
 			width: 150px;
 		}
 		
-		#rotbot_lines table, #rotbot_lines table tr, #rotbot_lines table td {
-			border: 1px solid #222;
+		#rotbot_lines table {
 			/*border-collapse: collapse;*/
+		}
+		
+		#rotbot_lines table tr, #rotbot_lines table td {
+			border: 1px solid #222;
 		}
 		
 		.motion_line {
@@ -548,7 +564,7 @@
 					</tr>
 				</table>
 				
-				<div class="navi timeline_contains_b">音效時間軸</div>
+				<!-- <div class="navi timeline_contains_b">音效時間軸</div> -->
 				<table class="timeline_contains_b">
 					<tr>
 						<td class="robot_face" align="center" valign="center">
@@ -562,7 +578,7 @@
 					</tr>
 				</table>
 				
-				<div class="navi timeline_contains_b">音樂時間軸</div>
+				<!-- <div class="navi timeline_contains_b">音樂時間軸</div> -->
 				<table class="timeline_contains_b">
 					<tr>
 						<td class="robot_face" align="center" valign="center">
