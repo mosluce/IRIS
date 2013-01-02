@@ -15,6 +15,7 @@
 	
 	<script type="text/javascript">
 		var ox, oy, target;
+		var mousedown = false;
 	
 		function initTimelineUnit() {
 			for(var i=0; i<=180; i++) {
@@ -72,7 +73,7 @@
 				ox = e.offsetX;
 				oy = e.offsetY;
 				
-				target = $(this);
+				target = $(this).children('div');
 			});
 		}
 		
@@ -120,9 +121,16 @@
 					var duration = valTmp[1];
 					
 					var item = generateTimelineItem(val);
+					
 					item.css('width', duration*21)
 						.css('height', 50)
-						.css('margin-top', -25);
+						.css('margin-top', -25)
+						.mousemove(function(e) {
+							var start_duration = Math.floor($(this).position().left/21);
+							var end_duration = start_duration + parseInt(duration);
+							
+							showPointer(e.pageX, e.pageY, start_duration, end_duration);
+						});
 					
 					hideAll();
 				}
@@ -138,7 +146,13 @@
 					var item = generateTimelineItem(val);
 					item.css('width', duration*21)
 						.css('height', 50)
-						.css('margin-top', -25);
+						.css('margin-top', -25)
+						.mousemove(function(e) {
+							var start_duration = Math.floor($(this).position().left/21);
+							var end_duration = start_duration + parseInt(duration);
+							
+							showPointer(e.pageX, e.pageY, start_duration, end_duration);
+						});
 					
 					hideAll();
 				}
@@ -153,7 +167,6 @@
 					item.css('width', 'auto')
 						.css('height', 20)
 						.css('margin-top', -11)
-						
 						.text(val);
 						
 					hideAll();
@@ -162,14 +175,45 @@
 			});
 		}
 		
+		function showPointer(x, y, start_duration, end_duration) {
+			if(!mousedown) {
+				// console.log(e.pageX + ' ' + e.pageY);
+				$('#pointer').show()
+					.css('left', x + 20)
+					.css('top', y)
+					.text(start_duration + 's ~ ' + end_duration + 's');
+				return false;
+			}
+		}
+		
 		function generateTimelineItem(tooltips) {
+			var rx = Math.floor(ox/21) * 21;
 			var item = $(document.createElement('div'))
 					.css('left', ox)
 					.addClass('timeline_item')
+					.css('cursor', 'pointer')
 					.css('position', 'absolute')
 					.attr('title', tooltips)
 					.tooltip()
-					.draggable({axis: 'x', containment: 'parent'})
+					.draggable({
+						axis: 'x', containment: 'parent', cursor: 'move', 
+						stop: function() {
+							// console.log($(this).position().left);
+							$(this).css('left', Math.floor($(this).position().left/21) * 21);
+							
+						}
+					})
+					.mouseleave(function() {
+						$('#pointer').hide();
+						mousedown = false;
+					})
+					.mousedown(function() {
+						$('#pointer').hide();
+						mousedown = true;
+					})
+					.mouseup(function() {
+						mousedown = false;
+					});
 			
 			item.click(function() {
 				return false;
@@ -184,7 +228,7 @@
 		}
 		
 		function initCorner() {
-			
+			$('table, .navi, table tr td').corner('3px');
 		}
 	
 		$(function() {
@@ -222,7 +266,7 @@
 		#timeline_unit {
 			height: 20px;
 			border: 1px solid #222;
-			font-size: 1px;
+			font-size: 12px;
 			text-align: left;
 			vertical-align: bottom;
 			margin-top: 10px;
@@ -243,7 +287,7 @@
 		
 		.timeline_block {
 			width: 20px;
-			height: 20px;
+			height: 18px;
 			border: 1px solid #ccc;
 			float: left;
 			left: -1px;
@@ -289,6 +333,11 @@
 			position: relative;
 		}
 		
+		/*.motion_line div, .speech_line div, .music_line div, .sound_line div {
+			height: 100%;
+			position: absolute;
+		}*/
+		
 		#motion_library img {
 			width: 100px;
 		}
@@ -310,6 +359,12 @@
 		
 		.music_line .timeline_item, .sound_line .timeline_item {
 			background-image: url(img200901032038450.jpg);
+		}
+		
+		#pointer {
+			background-color: #000000;
+			color: #FFFFFF;
+			padding: 2px;
 		}
 	</style>
 </head>
@@ -374,12 +429,16 @@
 							<img src="robot_face/d_1.jpg" />
 						</td>
 						<td class="motion_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 					
@@ -388,12 +447,16 @@
 							<img src="robot_face/d_2.jpg" />
 						</td>
 						<td class="motion_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 					
@@ -402,12 +465,16 @@
 							<img class="robot_face" src="robot_face/b_1.jpg" />
 						</td>
 						<td class="motion_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
-							
+							<div>
+								
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -462,6 +529,10 @@
 	<div id="speech_inputor">
 		<input type="text" class="message" />
 		<input type="button" class="submit" value="加入" />
+	</div>
+	
+	<div id="pointer" style="position: absolute; display: none;">
+		
 	</div>
 </body>
 </html>
