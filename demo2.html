@@ -187,12 +187,18 @@
 		}
 		
 		function generateTimelineItem(tooltips) {
+			if(!target.attr('init')) {
+				target.text('');
+				target.attr('init', true);
+			}
+			
 			var rx = Math.floor(ox/21) * 21;
 			var item = $(document.createElement('div'))
 					.css('left', ox)
 					.addClass('timeline_item')
 					.css('cursor', 'pointer')
 					.css('position', 'absolute')
+					.css('color', '#000')
 					.attr('title', tooltips)
 					.tooltip({
 						content: function() {
@@ -349,7 +355,7 @@
 			border: 1px solid #ccc;
 			float: left;
 			margin-right: -1px;
-			background-color: #EAEAEA;
+			/*background-color: #EAEAEA;*/
 		}
 		
 		.timeline_block_b {
@@ -389,6 +395,7 @@
 		
 		.motion_line, .speech_line, .music_line, .sound_line {
 			position: relative;
+			color: #ccc;
 		}
 		
 		/*.motion_line div, .speech_line div, .music_line div, .sound_line div {
@@ -408,15 +415,19 @@
 		.timeline_item {
 			width: 100px;
 			height: 140px;
-			background-color: #ccc;
+			/*background-color: #ccc;*/
 			border: 1px solid #333;
 			position: absolute;
 			top: 50%;
 			margin-top: -70px;
 		}
 		
-		.music_line .timeline_item, .sound_line .timeline_item {
-			background-image: url(img200901032038450.jpg);
+		.music_line .timeline_item {
+			background-image: url(music.jpg);
+		}
+		
+		.sound_line .timeline_item {
+			background-image: url(sound.jpg);
 		}
 		
 		#pointer {
@@ -488,14 +499,14 @@
 						</td>
 						<td class="motion_line">
 							<div>
-								
+								將動作拖曳至此
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
 							<div>
-								
+								點一下輸入文字
 							</div>
 						</td>
 					</tr>
@@ -506,14 +517,14 @@
 						</td>
 						<td class="motion_line">
 							<div>
-								
+								將動作拖曳至此
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
 							<div>
-								
+								點一下輸入文字
 							</div>
 						</td>
 					</tr>
@@ -524,14 +535,14 @@
 						</td>
 						<td class="motion_line">
 							<div>
-								
+								將動作拖曳至此
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="speech_line">
 							<div>
-								
+								點一下輸入文字
 							</div>
 						</td>
 					</tr>
@@ -544,7 +555,7 @@
 							<img src="sound.png" style="width: 40px;" />
 						</td>
 						<td class="sound_line">
-							<div class="inner"  style="height: 60px; background-color: #ccc;">
+							<div class="inner"  style="height: 60px;">
 								
 							</div>
 						</td>
@@ -558,7 +569,7 @@
 							<img src="musical-note_17-312145727.jpg" style="width: 40px;" />
 						</td>
 						<td class="music_line">
-							<div class="inner" style="height: 60px; background-color: #ccc;">
+							<div class="inner" style="height: 60px;">
 								
 							</div>
 						</td>
