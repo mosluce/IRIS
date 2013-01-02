@@ -143,7 +143,7 @@
 				if(val != '' && val != null) {
 					var valTmp = val.split('|');
 					var val = valTmp[0];
-					var duration = valTmp[1];
+					var duration = valTmp[1]; //string
 					
 					var item = generateTimelineItem(val);
 					item.css('width', duration*21)
@@ -151,7 +151,7 @@
 						.css('margin-top', -25)
 						.mousemove(function(e) {
 							var start_duration = Math.floor($(this).position().left/21);
-							var end_duration = start_duration + parseInt(duration);
+							var end_duration = start_duration + parseInt(duration);  //字串轉數字
 							
 							showPointer(e.pageX, e.pageY, start_duration, end_duration);
 						});
@@ -183,23 +183,24 @@
 		
 		function showPointer(x, y, start_duration, end_duration) {
 			if(!mousedown) {
+				//
 				// console.log(e.pageX + ' ' + e.pageY);
 				$('#pointer').show()
 					.css('left', x + 20)
 					.css('top', y);
 					
-				if(end_duration) {
-					$('#pointer').text(start_duration + 's ~ ' + end_duration + 's');
+				if(end_duration) {  //若有結束時間
+					$('#pointer').text(start_duration + 's ~ ' + end_duration + 's');  //註解顯示開始與結束時間
 				} else {
-					$('#pointer').text(start_duration + 's');
+					$('#pointer').text(start_duration + 's');  //語音類註解只顯示開始時間
 				}
 				return false;
 			}
 		}
 		
 		function generateTimelineItem(tooltips) {
-			if(!target.attr('init')) {
-				target.text('');
+			if(!target.attr('init')) {  //初始無init屬性故預設為false
+				target.text('');  //清除欄位內的預設文字
 				target.attr('init', true);
 			}
 			
@@ -211,7 +212,7 @@
 					.css('position', 'absolute')
 					.css('color', '#000')
 					.attr('title', tooltips)
-					.tooltip({
+					.tooltip({  //產生註解區塊
 						content: function() {
 							return tooltips;
 						}
@@ -252,24 +253,24 @@
 			$('table, .navi, table tr td').corner('3px');
 		}
 		
-		var robot_start_dragged = false;
+		var robot_start_dragged = false; //預設未拖拉
 		function initRobotMotionDrag() {
-			$('.motion_line').mousemove(function(e) {
+			$('.motion_line').mousemove(function(e) { //滑鼠在動作欄位移動
 				if(robot_start_dragged) {
 					target = $(this);
 					
-					ox = e.offsetX;
+					ox = e.offsetX;  //欲放入圖片的位置
 					oy = e.offsetY;
 				}
 			})
-			.mouseleave(function() {
-				if(robot_start_dragged) {
+			.mouseleave(function() {  //滑鼠拖著圖片離開視為無目標
+				if(robot_start_dragged) {  	
 					target = null;
 				}
 			});
 			
 			$('#motion_library img').draggable({
-				helper: 'clone',
+				helper: 'clone',  //圖片副本避免將原圖拖走
 				start: function() {
 					robot_start_dragged = true;
 				},
@@ -277,17 +278,18 @@
 					// console.log('stop');
 					var source = $(this);
 					var img = $(document.createElement('img')).attr('src', source.attr('src')).css('width', 100);
-					
+					//img作為註解圖片使用
 					if(target != null) {
-						var title = $(this).attr('title').split('|');
+						var title = $(this).attr('title').split('|');  //切割名稱與時間
 						var text = title[0];
 						var duration = title[1];
 						
-						var item = generateTimelineItem(img);
-						item.css('height', 70)
+						var item = generateTimelineItem(img);  //在時間軸內建立div
+						item
+							.css('height', 70)
 							.css('margin-top', -40)
 							.css('width', duration * 21 - 10)
-							.css('overflow', 'hidden')
+							.css('overflow', 'hidden')  //文字超過邊界去除
 							.css('padding', 5)
 							.css('color', '#fff')
 							.css('background-image', 'url('+source.attr('src')+')')
