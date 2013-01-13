@@ -166,7 +166,8 @@
 				if(val != '' && val != null) {
 					var item = generateTimelineItem(val);
 					
-					item.css('width', 'auto')
+					item.css('width', '50px')
+						.css('overflow', 'hidden')
 						.css('height', 20)
 						.css('margin-top', -11)
 						.text(val)
@@ -179,6 +180,10 @@
 				}
 				
 			});
+			
+			$('.cancel').click(function() {
+				hideAll();
+			});
 		}
 		
 		function showPointer(x, y, start_duration, end_duration) {
@@ -190,9 +195,9 @@
 					.css('top', y);
 					
 				if(end_duration) {  //若有結束時間
-					$('#pointer').text(start_duration + 's ~ ' + end_duration + 's');  //註解顯示開始與結束時間
+					$('#pointer').text('第'+start_duration + '秒 ~ 第' + end_duration + '秒');  //註解顯示開始與結束時間
 				} else {
-					$('#pointer').text(start_duration + 's');  //語音類註解只顯示開始時間
+					$('#pointer').text('第'+start_duration + '秒');  //語音類註解只顯示開始時間
 				}
 				return false;
 			}
@@ -324,6 +329,7 @@
 			margin: 0px;
 			padding: 0px;
 			font-size: 14px;
+			font-family: "微軟正黑體", "Microsoft JhengHei";
 		}
 		
 		#mainframe {
@@ -380,7 +386,7 @@
 			line-height: 30px;
 			color: #222222;
 			/*background-color: #F2AA25;*/
-			background: #5C9CCC url(jqueryui/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);
+			/*background: #5C9CCC url(jqueryui/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);*/
 			padding-left: 10px;
 			border: 1px solid #3681D3;
 			margin-bottom: 2px;
@@ -507,7 +513,7 @@
 			</div>
 			
 			<div id="rotbot_lines" style="margin-top: 10px;">
-				<div class="navi timeline_contains_b">
+				<div class="navi timeline_contains_b ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 					動作時間軸
 				</div>
 				<table id="list_table" class="timeline_contains_b">
@@ -573,8 +579,8 @@
 							<img src="sound.png" style="width: 40px;" />
 						</td>
 						<td class="sound_line">
-							<div class="inner"  style="height: 60px;">
-								
+							<div class="inner"  style="height: 60px; line-height: 60px;">
+							點一下選擇音效	
 							</div>
 						</td>
 					</tr>
@@ -587,8 +593,8 @@
 							<img src="musical-note_17-312145727.jpg" style="width: 40px;" />
 						</td>
 						<td class="music_line">
-							<div class="inner" style="height: 60px;">
-								
+							<div class="inner" style="height: 60px; line-height: 60px;">
+							點一下選擇音樂	
 							</div>
 						</td>
 					</tr>
@@ -604,6 +610,7 @@
 			<option value="Music 02|30">Music 02</option>
 			<option value="Music 03|60">Music 03</option>
 		</select>
+		<input type="button" class="cancel" value="取消" />
 	</div>
 	<div id="sound_selector">
 		<select>
@@ -612,10 +619,12 @@
 			<option value="喇叭聲|5">喇叭聲</option>
 			<option value="爆炸聲|3">爆炸聲</option>
 		</select>
+		<input type="button" class="cancel" value="取消" />
 	</div>
 	<div id="speech_inputor">
 		<input type="text" class="message" />
 		<input type="button" class="submit" value="加入" />
+		<input type="button" class="cancel" value="取消" />
 	</div>
 	
 	<div id="pointer" style="position: absolute; display: none;">
